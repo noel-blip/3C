@@ -1,0 +1,11 @@
+# Flutter generated files and caches
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.packages
+**/coverage/
+.dart_tool/
+.idea/
+.vscode/
+/flutter/

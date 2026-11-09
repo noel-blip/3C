@@ -1,0 +1,96 @@
+﻿/*
+EXPERIMENT: experiment_5b2
+AIM: To manage application state using the Provider package.
+*/
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CounterProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+// Provider class
+class CounterProvider extends ChangeNotifier {
+  int counter = 0;
+
+  void increment() {
+    counter++;
+    notifyListeners();
+  }
+
+  void decrement() {
+    counter--;
+    notifyListeners();
+  }
+}
+
+// Root widget
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const CounterPage(),
+    );
+  }
+}
+
+// UI
+class CounterPage extends StatelessWidget {
+  const CounterPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Provider Example')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Counter Value', style: TextStyle(fontSize: 20)),
+            const SizedBox(height: 10),
+            Consumer<CounterProvider>(
+              builder: (context, counterProvider, child) {
+                return Text(
+                  '${counterProvider.counter}',
+                  style: const TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<CounterProvider>().decrement();
+                  },
+                  child: const Text('-'),
+                ),
+                const SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    context.read<CounterProvider>().increment();
+                  },
+                  child: const Text('+'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
